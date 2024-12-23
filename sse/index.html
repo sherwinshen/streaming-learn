@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SSE Demo</title>
+  </head>
+  <body>
+    <button id="start">start</button>
+    <button id="close">close</button>
+    <button id="post-start">post-start</button>
+    <div id="chatOutput"></div>
+  </body>
+  <script>
+    let eventSource = null;
+
+    document.getElementById("start").addEventListener("click", function () {
+      // 终止前一个EventSource连接
+      if (eventSource) {
+        eventSource.close();
+      }
+
+      // 创建一个EventSource对象，连接到服务器
+      eventSource = new EventSource("http://localhost:3000/sse");
+
+      // 监听服务器发送的消息
+      eventSource.onmessage = function (event) {
+        console.log(event);
+        const data = JSON.parse(event.data);
+        if (data.type === "close") {
+          eventSource.close();
+          console.log("连接已关闭");
+          return;
+        } else {
+          const chatOutput = document.getElementById("chatOutput");
+          const message = document.createElement("p");
+          message.textContent = data.content;
+          chatOutput.appendChild(message);
+        }
+      };
+
+      // 监听连接打开事件
+      eventSource.onopen = function () {
+        console.log("连接已打开");
+      };
+
+      eventSource.onerror = function (event) {
+        // 处理错误情况
+        console.error("EventSource failed:", event);
+        eventSource.close();
+      };
+
+      // 监听服务器发送的特定事件
+      eventSource.addEventListener("custom", function (event) {
+        console.log("custom", event);
+      });
+    });
+
+    document.getElementById("close").addEventListener("click", function () {
+      // 终止前一个EventSource连接
+      if (eventSource) {
+        eventSource.close();
+      }
+    });
+  </script>
+</html>

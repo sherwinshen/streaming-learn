@@ -1,0 +1,15 @@
+{
+  "name": "streaming-learn-websocket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client": "live-server",
+    "server": "node server.js"
+  },
+  "author": "Sherwin Shen",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

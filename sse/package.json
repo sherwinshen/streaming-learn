@@ -1,0 +1,16 @@
+{
+  "name": "streaming-learn-sse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client": "live-server",
+    "server": "nodemon server.js"
+  },
+  "author": "Sherwin Shen",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

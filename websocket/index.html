@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebSocket Demo</title>
+  </head>
+  <body>
+    <button id="click-btn">click</button>
+    <button id="close-btn">close</button>
+  </body>
+  <script>
+    const ws = new WebSocket("ws://localhost:4000");
+
+    ws.onopen = () => {
+      console.log("服务端连接成功");
+      ws.send(JSON.stringify({ type: "init", msg: "Hello Server" }));
+    };
+    ws.onmessage = (e) => {
+      console.log("收到消息", e.data);
+    };
+    ws.onclose = () => {
+      console.log("连接关闭");
+    };
+    ws.onerror = (e) => {
+      console.log("发生错误", e);
+    };
+    document.getElementById("click-btn").onclick = () => {
+      ws.send(JSON.stringify({ type: "click", msg: `Hello Server: ${Date.now()}` }));
+    };
+    document.getElementById("close-btn").onclick = () => {
+      ws.close();
+    };
+  </script>
+</html>
